@@ -2,10 +2,13 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <title>Error</title>
 </head>
 <body>
-
+<div th:replace="header"></div>
+<h1>Error info</h1>
+<div th:text="${info}"></div>
 
 </body>
 </html>
