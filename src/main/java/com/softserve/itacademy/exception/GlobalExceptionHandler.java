@@ -18,12 +18,12 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(EntityNotFoundException.class)
     @ResponseStatus(value = HttpStatus.NOT_FOUND)
     public ModelAndView handleEntityNotFoundException(EntityNotFoundException exception) {
-        return getModelAndView(HttpStatus.NOT_FOUND, exception, "not-found");
+        return getModelAndView(HttpStatus.NOT_FOUND, exception);
     }
 
-    private ModelAndView getModelAndView(HttpStatus httpStatus, Exception exception, String viewName) {
+    private ModelAndView getModelAndView(HttpStatus httpStatus, Exception exception) {
         logger.error("An exception '{}' was raised", exception.getMessage());
-        ModelAndView modelAndView = new ModelAndView(viewName);
+        ModelAndView modelAndView = new ModelAndView("error");
         modelAndView.addObject("code", httpStatus.value());
         modelAndView.addObject("phrase", httpStatus.getReasonPhrase());
         modelAndView.addObject("message", exception.getMessage());
