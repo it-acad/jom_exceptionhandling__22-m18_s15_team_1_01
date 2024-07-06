@@ -21,6 +21,12 @@ public class GlobalExceptionHandler {
         return getModelAndView(HttpStatus.NOT_FOUND, exception);
     }
 
+    @ExceptionHandler(Exception.class)
+    @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
+    public ModelAndView handleInternalServerError(Exception exception) {
+        return getModelAndView(HttpStatus.INTERNAL_SERVER_ERROR, exception);
+    }
+
     private ModelAndView getModelAndView(HttpStatus httpStatus, Exception exception) {
         logger.error("An exception '{}' was raised", exception.getMessage());
         ModelAndView modelAndView = new ModelAndView("error");
