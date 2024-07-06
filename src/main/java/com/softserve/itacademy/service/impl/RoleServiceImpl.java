@@ -5,6 +5,7 @@ import com.softserve.itacademy.repository.RoleRepository;
 import com.softserve.itacademy.service.RoleService;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -26,7 +27,10 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public Role readById(long id) {
         Optional<Role> optional = roleRepository.findById(id);
+        if (optional.isPresent()) {
             return optional.get();
+        }
+        throw new EntityNotFoundException("Role with id " + id + " not found");
     }
 
     @Override
@@ -38,7 +42,10 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public void delete(long id) {
         Role role = readById(id);
+        if (role != null) {
             roleRepository.delete(role);
+        }
+        throw new EntityNotFoundException("Role with id " + id + " not found");
     }
 
     @Override

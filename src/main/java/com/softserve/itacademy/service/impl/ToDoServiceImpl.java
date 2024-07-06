@@ -5,6 +5,7 @@ import com.softserve.itacademy.repository.ToDoRepository;
 import com.softserve.itacademy.service.ToDoService;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -26,7 +27,10 @@ public class ToDoServiceImpl implements ToDoService {
     @Override
     public ToDo readById(long id) {
         Optional<ToDo> optional = todoRepository.findById(id);
+        if (optional.isPresent()) {
             return optional.get();
+        }
+        throw new EntityNotFoundException("ToDo with id " + id + " not found");
     }
 
     @Override
@@ -38,7 +42,11 @@ public class ToDoServiceImpl implements ToDoService {
     @Override
     public void delete(long id) {
         ToDo todo = readById(id);
+        if (todo != null) {
             todoRepository.delete(todo);
+        } else {
+            throw new EntityNotFoundException("ToDo with id " + id + " not found");
+        }
     }
 
     @Override

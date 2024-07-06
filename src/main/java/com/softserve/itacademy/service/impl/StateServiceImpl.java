@@ -5,6 +5,7 @@ import com.softserve.itacademy.repository.StateRepository;
 import com.softserve.itacademy.service.StateService;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -25,7 +26,10 @@ public class StateServiceImpl implements StateService {
     @Override
     public State readById(long id) {
         Optional<State> optional = stateRepository.findById(id);
+        if (optional.isPresent()) {
             return optional.get();
+        }
+        throw new EntityNotFoundException("State with id " + id + " not found");
     }
 
     @Override
@@ -37,13 +41,20 @@ public class StateServiceImpl implements StateService {
     @Override
     public void delete(long id) {
         State state = readById(id);
+        if (state != null) {
             stateRepository.delete(state);
+        } else {
+            throw new EntityNotFoundException("State with id " + id + " not found");
+        }
     }
 
     @Override
     public State getByName(String name) {
         Optional<State> optional = Optional.ofNullable(stateRepository.getByName(name));
+        if (optional.isPresent()) {
             return optional.get();
+        }
+        throw new EntityNotFoundException("State with name '" + name + "' not found");
     }
 
     @Override

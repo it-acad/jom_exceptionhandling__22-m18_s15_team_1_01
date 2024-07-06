@@ -5,6 +5,7 @@ import com.softserve.itacademy.repository.TaskRepository;
 import com.softserve.itacademy.service.TaskService;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -25,7 +26,10 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public Task readById(long id) {
         Optional<Task> optional = taskRepository.findById(id);
+        if (optional.isPresent()) {
             return optional.get();
+        }
+        throw new EntityNotFoundException("Task with id " + id + " not found");
     }
 
     @Override
@@ -37,7 +41,11 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public void delete(long id) {
         Task task = readById(id);
+        if (task != null) {
             taskRepository.delete(task);
+        } else {
+            throw new EntityNotFoundException("Task with id " + id + " not found");
+        }
     }
 
     @Override
